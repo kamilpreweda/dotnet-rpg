@@ -1,3 +1,5 @@
+using dotnet_rpg.Dtos.Character;
+
 namespace dotnet_rpg.Services.CharacterService
 {
     public class CharacterService : ICharacterService
@@ -7,22 +9,22 @@ namespace dotnet_rpg.Services.CharacterService
             new Character(),
             new Character {Id = 1, Name = "Sam"}
         };
-        public async Task<ServiceResponse<List<Character>>> AddCharacter(Character newCharacter)
+        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
-            var serviceResponse = new ServiceResponse<List<Character>>();
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             characters.Add(newCharacter);
             serviceResponse.Data = characters;
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<Character>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
-            return new ServiceResponse<List<Character>> { Data = characters };
+            return new ServiceResponse<List<GetCharacterDto>> { Data = characters };
         }
 
-        public async Task<ServiceResponse<Character>> GetCharacterById(int id)
+        public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
-            var serviceResponse = new ServiceResponse<Character>();
+            var serviceResponse = new ServiceResponse<GetCharacterDto>();
             var character = characters.FirstOrDefault(c => c.Id == id);
             serviceResponse.Data = character;
             return serviceResponse;
