@@ -1,5 +1,7 @@
 using AutoMapper;
+using dotnet_rpg.Data;
 using dotnet_rpg.Dtos.Character;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_rpg.Services.CharacterService
 {
@@ -12,10 +14,14 @@ namespace dotnet_rpg.Services.CharacterService
         };
 
         private readonly IMapper _mapper;
-        public CharacterService(IMapper mapper)
+        private readonly DataContext _context;
+        public CharacterService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
+
+        public DataContext Context { get; }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
@@ -49,10 +55,11 @@ namespace dotnet_rpg.Services.CharacterService
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
-            return new ServiceResponse<List<GetCharacterDto>>
-            {
-                Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList()
-            };
+            var response = new ServiceResponse<List<GetCharacterDto>>();
+            var dbCharacters = await _context.Characters.ToListAsync();
+            response.Data = dbCharacters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+
+            return response;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
