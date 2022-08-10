@@ -17,7 +17,7 @@ namespace dotnet_rpg.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte>(type: "tinyint", nullable: false)
+                    PasswordSalt = table.Column<byte[]>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
