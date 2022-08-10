@@ -76,7 +76,7 @@ namespace dotnet_rpg.Services.CharacterService
 
             try
             {
-                Character character = characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
+                var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == updatedCharacter.Id);
 
                 // _mapper.Map(updatedCharacter, character); UPDATING CHARACTER BY USING AUTO MAPPER EXAMPLE (NEED TO CREATE AUTOMAPPER PROFILE)
                 character.Name = updatedCharacter.Name;
@@ -85,6 +85,8 @@ namespace dotnet_rpg.Services.CharacterService
                 character.Defence = updatedCharacter.Defence;
                 character.Intelligence = updatedCharacter.Intelligence;
                 character.Class = updatedCharacter.Class;
+
+                await _context.SaveChangesAsync();
 
                 response.Data = _mapper.Map<GetCharacterDto>(character);
             }
