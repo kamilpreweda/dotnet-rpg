@@ -3,6 +3,7 @@ using dotnet_rpg.Services.CharacterService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace dotnet_rpg.Controllers
 {
@@ -17,11 +18,12 @@ namespace dotnet_rpg.Controllers
             _characterService = characterService;
 
         }
-        [AllowAnonymous] // enable method without authorization
+
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
-            return Ok(await _characterService.GetAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _characterService.GetAllCharacters(userId));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> GetSingle(int id)
