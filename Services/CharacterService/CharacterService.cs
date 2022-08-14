@@ -52,10 +52,6 @@ namespace dotnet_rpg.Services.CharacterService
                     response.Success = false;
                     response.Message = "Character not found.";
                 }
-
-
-
-
             }
             catch (Exception ex)
             {
